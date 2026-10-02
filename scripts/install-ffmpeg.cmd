@@ -3,7 +3,7 @@ setlocal
 set "STUDIO_APP=%~dp0MySingingMonsterKaraokeStudio.exe"
 if not exist "%STUDIO_APP%" set "STUDIO_APP=%~dp0..\publish-win-x64\MySingingMonsterKaraokeStudio.exe"
 if not exist "%STUDIO_APP%" (
-    echo The studio app was not found. Build with scripts\build.cmd or extract the portable release ZIP.
+    echo The studio app was not found. Build with scripts\build.cmd or download MySingingMonsterKaraokeStudio.exe.
     pause
     exit /b 1
 )

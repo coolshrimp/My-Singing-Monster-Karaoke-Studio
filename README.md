@@ -44,11 +44,11 @@ Workspace screenshot: **0.10.10**; other views: **0.10.9**. Screenshot files are
 
 ## Download and start
 
-Download the Windows x64 EXE or portable ZIP from [GitHub Releases](https://github.com/coolshrimp/My-Singing-Monster-Karaoke-Studio/releases/latest). The ZIP includes the app, this guide and the one-click FFmpeg setup shortcut.
+Download [MySingingMonsterKaraokeStudio.exe](https://github.com/coolshrimp/My-Singing-Monster-Karaoke-Studio/releases/latest/download/MySingingMonsterKaraokeStudio.exe). Each release contains this single Windows x64 application download.
 
-1. Extract the portable ZIP into a normal folder, then open `MySingingMonsterKaraokeStudio.exe`. The standalone EXE can also be run directly.
+1. Save `MySingingMonsterKaraokeStudio.exe` into a normal folder and open it directly.
 2. Make sure [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) is installed. It supplies the embedded editor and online library.
-3. Click **Install FFmpeg** in the studio, or run `install-ffmpeg.cmd` next to the app. The converter is downloaded and checksum-verified on first setup, then reused.
+3. Click **Install FFmpeg** in the studio. The converter is downloaded and checksum-verified on first setup, then reused.
 4. Choose **Import MP3 / Audio…** or **Open Song / Project…** to begin.
 
 The release includes .NET, so users do not need to install the .NET SDK or runtime. FFmpeg is **not bundled** with the app. The compressed EXE is approximately 74 MB; the separately installed converter uses additional disk space. Internet is needed for first-time converter setup and online downloads, while local editing works offline after setup.
@@ -188,17 +188,17 @@ dotnet run --project tests/MySingingMonsterKaraokeStudio.SmokeTests/MySingingMon
 
 It exercises the real WPF/WebView2 editor, synthetic audio conversion, chart parsing, editing, saving, library features, game integration in isolated test folders, and converter setup. The harness installs a verified FFmpeg copy when needed; it does not depend on a bundled converter. It requires a Windows desktop session and WebView2.
 
-Build versioned download assets locally:
+Build the release EXE locally:
 
 ```powershell
 .\scripts\build-release.ps1 -Tag v0.10.14
 ```
 
-This publishes fresh source into an isolated temporary folder and writes the EXE, portable ZIP and SHA256 checksums into `dist`. The tag must be `live` or match the project version. It does not commit, tag, push or publish anything itself.
+This publishes fresh source into an isolated temporary folder and writes `MySingingMonsterKaraokeStudio.exe` into `dist`. The tag must be `live` or match the project version. It does not commit, tag, push or publish anything itself.
 
 ## Releases and repository layout
 
-Pushing `live` or a matching `v*` tag to GitHub runs [.github/workflows/release.yml](.github/workflows/release.yml): Windows smoke checks, fresh release build, artifact upload, then a GitHub Release with downloadable EXE, ZIP and checksums. The release title and asset filenames include the application version. A manual workflow run builds artifacts without publishing a release. See [the release guide](docs/RELEASING.md) for versioning and first-publish steps.
+Pushing `live` or a matching `v*` tag to GitHub runs [.github/workflows/release.yml](.github/workflows/release.yml): Windows smoke checks, fresh release build, artifact upload, then a GitHub Release containing only `MySingingMonsterKaraokeStudio.exe`. The release title and EXE metadata include the application version; the download filename stays the same. A manual workflow run builds an artifact without publishing a release. See [the release guide](docs/RELEASING.md) for versioning and first-publish steps.
 
 ```text
 MySingingMonsterKaraokeStudio.sln     Visual Studio application solution
@@ -214,7 +214,7 @@ README.md                           Current user and developer guide
 CHANGELOG.md                        Version history
 ```
 
-The root solution opens the application. The separate smoke-check project lives in tests/. Build shortcuts live in `scripts/`; no `.cmd` helpers are required at the repository root. Executables are distributed as GitHub Release assets and are excluded from Git. Documentation contains no direct executable download links.
+The root solution opens the application. The separate smoke-check project lives in tests/. Build shortcuts live in `scripts/`; no `.cmd` helpers are required at the repository root. Executables are distributed as GitHub Release assets and are excluded from Git.
 
 Generated builds, downloaded FFmpeg, test data and local song projects stay out of Git. The `sources/` directory is read-only synced reference material and is also excluded.
 

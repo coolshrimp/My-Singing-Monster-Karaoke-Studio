@@ -49,7 +49,7 @@ jobs:
         run: |
           dotnet run --project tests/MySingingMonsterKaraokeStudio.SmokeTests/MySingingMonsterKaraokeStudio.SmokeTests.csproj -c Release
           if ($LASTEXITCODE -ne 0) { throw 'Smoke checks failed; release will not be published.' }
-      - name: Build fresh EXE and portable package
+      - name: Build fresh release EXE
         env:
           EVENT_NAME: ${{ github.event_name }}
           RELEASE_TAG: ${{ github.ref_name }}
@@ -63,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: windows-release
-          path: dist/*
+          path: dist/MySingingMonsterKaraokeStudio.exe
           if-no-files-found: error
           retention-days: 14
           compression-level: 0
@@ -96,7 +96,8 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
           RELEASE_VERSION: ${{ needs.build.outputs.version }}
         run: |
-          $assets = @(Get-ChildItem -LiteralPath dist -File | ForEach-Object FullName)
-          if ($assets.Count -ne 3) { throw 'Expected exactly EXE, ZIP and checksum assets.' }
-          gh release create $env:RELEASE_TAG @assets --verify-tag --generate-notes --latest --title "My Singing Monster Karaoke Studio v$env:RELEASE_VERSION"
+          $asset = Join-Path dist 'MySingingMonsterKaraokeStudio.exe'
+          if (!(Test-Path -LiteralPath $asset -PathType Leaf)) { throw 'Expected MySingingMonsterKaraokeStudio.exe.' }
+          if (@(Get-ChildItem -LiteralPath dist -File).Count -ne 1) { throw 'Expected exactly one release EXE.' }
+          gh release create $env:RELEASE_TAG $asset --verify-tag --generate-notes --latest --title "My Singing Monster Karaoke Studio v$env:RELEASE_VERSION"
           if ($LASTEXITCODE -ne 0) { throw 'GitHub release publication failed. Check release permissions or an existing release for this tag.' }
