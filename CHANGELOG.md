@@ -6,6 +6,7 @@ The current application version is **0.10.14**, the first GitHub release under t
 
 - Added the `live` release trigger with versioned Windows downloads and credited Coolshrimp as the sole contributor.
 - Preserved completed export paths when delayed audio-loading notices arrive; the Windows smoke harness now checks this reload timing explicitly.
+- Normalized isolated smoke-test paths so GitHub runner folder separators do not produce false export-path failures.
 
 - Removed obsolete build caches and the unused source-folder FFmpeg binary; installer notices now explain the separate verified download.
 - Excluded temporary files and local credential/key files from Git; downloader requests report the actual application version.

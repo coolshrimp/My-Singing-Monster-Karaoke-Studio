@@ -13,7 +13,7 @@ internal static class Program
     private static MainWindow Window = null!;
     private static WebView2 Editor = null!;
     private static readonly List<string> Passed = [];
-    private static readonly string TestRoot = Path.Combine(Environment.GetEnvironmentVariable("MSM_STUDIO_TEST_ROOT") ?? Path.Combine(Path.GetTempPath(), "MSMStudioTests"), Guid.NewGuid().ToString("N"));
+    private static readonly string TestRoot = Path.GetFullPath(Path.Combine(Environment.GetEnvironmentVariable("MSM_STUDIO_TEST_ROOT") ?? Path.Combine(Path.GetTempPath(), "MSMStudioTests"), Guid.NewGuid().ToString("N")));
     private static readonly ProjectService Projects = new(Path.Combine(TestRoot, "library"), Path.Combine(TestRoot, "studio-settings.json"));
     private static readonly GameSongService Game = new(Path.Combine(TestRoot, "game-data"));
 
