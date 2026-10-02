@@ -1,0 +1,8 @@
+FFmpeg 9.0.2 essentials Windows build by Gyan Doshi.
+Download: https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-9.0.2-essentials_build.zip
+Mirror: https://github.com/GyanD/codexffmpeg/releases/download/9.0.2/ffmpeg-9.0.2-essentials_build.zip
+Provider listed at https://ffmpeg.org/download.html
+Build license is included in FFmpeg-LICENSE.txt.
+Corresponding build/source information: https://github.com/GyanD/codexffmpeg/releases/tag/9.0.2
+FFmpeg sources: https://ffmpeg.org/download.html#get-sources
+Archive SHA256: 60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba

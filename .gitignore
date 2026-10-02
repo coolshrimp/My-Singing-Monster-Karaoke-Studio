@@ -1,0 +1,60 @@
+# Build, publish and release output
+**/bin/
+**/obj/
+/publish*/
+/dist/
+**/test-results/
+**/standalone-installer-*/
+/_tests-relocation/
+
+# Downloaded converter; setup fetches a verified copy separately
+*.exe
+*.dll
+*.pdb
+*.zip
+
+# Synced reference material and local agent instructions
+/sources/
+AGENTS.md
+.agents/
+.codex/
+
+# Local projects, media, downloads and editor settings
+/Projects/
+/Downloads/
+.vs/
+.vscode/
+*.user
+*.suo
+*.log
+.env
+.env.*
+!.env.example
+Thumbs.db
+Desktop.ini
+
+**/TestResults/
+
+**/coverage/
+
+*.trx
+
+/artifacts/
+
+# Disposable files and local credentials
+*.tmp
+*.temp
+*.bak
+*.orig
+*~
+*.pfx
+*.p12
+*.pem
+*.key
+id_rsa
+id_ed25519
+credentials.json
+auth.json
+cookies.txt
+.npmrc
+.netrc

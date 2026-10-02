@@ -1,0 +1,24 @@
+:root{color-scheme:dark;font-family:Segoe UI,Arial,sans-serif;background:#101218;color:#eef1f7}
+*{box-sizing:border-box}html,body,#app{margin:0;width:100%;height:100%;overflow:hidden}
+#app{display:grid;grid-template-rows:auto auto 100px 1fr;background:#101218}
+.toolbar{display:flex;gap:9px;align-items:center;padding:10px 12px;background:#181b23;border-bottom:1px solid #2a303d;flex-wrap:wrap}
+button,input,select{background:#242936;color:#fff;border:1px solid #343c4b;border-radius:6px;padding:7px 9px}button{cursor:pointer}button:hover{background:#303748}
+label{font-size:12px;color:#aeb6c5}.toolbar input{width:78px}.time{font-family:Consolas,monospace;color:#c6cedb;min-width:170px}
+.hint{padding:6px 12px;font-size:11px;color:#8993a7;background:#13161d}
+.wave-wrap{position:relative;background:#0d0f14;border-top:1px solid #252a35;border-bottom:1px solid #252a35;overflow:hidden}.wave-wrap canvas{width:100%;height:100%}.wave-playhead{position:absolute;top:0;bottom:0;width:2px;background:#fff;left:0;pointer-events:none}
+#chartViewport{position:relative;overflow:auto;background:#0f1117;min-height:0}#chartSpace{position:relative}#chart{display:block;position:sticky;left:0;top:0;cursor:crosshair;touch-action:none}
+button:disabled{opacity:.4;cursor:default}input[type=range]{width:75px;padding:0;vertical-align:middle}input[type=checkbox]{width:auto;vertical-align:middle}.hint{line-height:1.6}#audioStatus{display:block;color:#afc6ef;font-size:12px}#audioStatus.error{color:#ffaeae}.wave-wrap canvas{cursor:pointer}
+.selection-status{font-size:12px;color:#b6c9f3;white-space:nowrap;flex:0 0 240px;width:240px;overflow:hidden;text-overflow:ellipsis}
+#chart:focus{outline:none}#chart:focus-visible{outline:1px solid #7597de;outline-offset:-1px}
+[hidden]{display:none!important}
+#previewViewport{min-height:0;display:flex;flex-direction:column;background:#101724;overflow:hidden}
+.preview-controls{display:flex;align-items:center;gap:16px;padding:10px 14px;background:#192539;flex-wrap:wrap}
+#previewScore{flex:1;color:#c2d6ff;font-size:13px}
+#previewCanvas{width:100%;flex:1;min-height:80px;cursor:crosshair;touch-action:none;outline:none}
+.preview-help{padding:8px 14px;font-size:12px;color:#a8bcda}
+body[data-view="preview"] #chartViewport,body[data-view="test"] #chartViewport{display:none}
+
+.trim-shade{position:absolute;top:0;bottom:0;background:rgba(0,0,0,.65);pointer-events:none;z-index:1}.trim-shade-start{left:0}.trim-shade-end{right:0}
+.trim-handle{position:absolute;top:0;bottom:0;width:18px;padding:0;border:2px solid #ffdb89;border-radius:3px;background:rgba(255,219,137,.2);color:#ffdb89;cursor:ew-resize;touch-action:none;z-index:3;font-size:15px}
+.trim-handle:hover,.trim-handle:focus-visible{background:#745c27;outline:2px solid #fff;outline-offset:-3px}
+.clip-selection{position:absolute;top:5px;left:50%;transform:translateX(-50%);z-index:4;padding:4px 9px;font-size:11px;background:#294b3b;border-color:#71b990;white-space:nowrap}

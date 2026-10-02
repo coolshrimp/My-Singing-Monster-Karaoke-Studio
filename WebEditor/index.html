@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>My Singing Monster Karaoke Studio Editor</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+  <div class="toolbar">
+    <label>View <select id="viewMode" aria-label="Studio view"><option value="editor">Editor</option><option value="preview">Preview</option><option value="test">Play Test</option></select></label>
+    <button id="play">▶ Play</button>
+    <button id="stop">■ Stop</button>
+    <label>Tool <select id="tool" aria-label="Editor tool"><option value="paint" selected>Paint</option><option value="curve">Curve</option><option value="select">Select</option></select></label>
+    <label title="Turn off the grid for continuous timing and pitch placement"><input id="grid" type="checkbox" checked> Grid</label>
+    <span class="time" id="time">00:00.000 / 00:00.000</span>
+    <label>BPM <input id="bpm" type="number" value="120" min="20" max="400" step="0.01"></label>
+    <label>Offset <input id="offset" type="number" value="0" step="0.001"></label>
+    <label>Snap
+      <select id="snap"><option value="0">Off</option><option value="4">1/4</option><option value="8" selected>1/8</option><option value="16">1/16</option><option value="32">1/32</option></select>
+    </label>
+    <label>Length (s) <input id="noteLength" type="number" value="0.25" min="0.03" max="3600" step="0.01" aria-label="Note length in seconds" title="Length of a single-click note, in seconds"></label>
+    <button id="applyLength" title="Set the selected notes to this length in seconds">Set length</button>
+    <button id="save" title="Choose a chart filename and location (Ctrl+S)">Save chart…</button>
+    <button id="undo" title="Ctrl+Z">Undo</button>
+    <button id="redo" title="Ctrl+Y">Redo</button>
+    <button id="delete" title="Delete selected notes">Delete</button>
+    <button id="singleLine" title="Trim overlapping notes into a single mouse path. Ctrl+Z to undo.">Remove overlaps</button>
+    <span id="selectionStatus" class="selection-status" role="status">No notes selected</span>
+    <label>Zoom <input id="zoom" type="range" min="30" max="240" value="90"></label>
+    <label>Volume <input id="volume" type="range" min="0" max="100" value="100"></label>
+    <label><input id="follow" type="checkbox" checked> Follow</label>
+  </div>
+  <div class="hint">Curve: drag to draw one smooth mouse path; turn Grid off for free placement. Paint: click using Length (s), or drag one sustain. Drag a note to move it; drag its end to resize. Select: drag a box; Shift adds notes. Right-drag erases. Remove overlaps makes a single mouse line. Edits save automatically. Ctrl+Z = undo; Space = play/pause; Ctrl+S = Save Chart As.<span id="audioStatus" role="status" aria-live="polite">Open a project to begin</span></div>
+  <div class="wave-wrap"><canvas id="wave" title="Waveform: click to seek; drag the start/end handles, then Clip selection. Gold ticks mark detected audio attacks used by Auto Chart."></canvas><div id="wavePlayhead" class="wave-playhead"></div>
+    <div id="trimShadeStart" class="trim-shade trim-shade-start"></div><div id="trimShadeEnd" class="trim-shade trim-shade-end"></div>
+    <button id="trimStartHandle" class="trim-handle" role="slider" aria-label="Trim start" aria-orientation="horizontal" hidden>❯</button>
+    <button id="trimEndHandle" class="trim-handle" role="slider" aria-label="Trim end" aria-orientation="horizontal" hidden>❮</button>
+    <button id="clipSelection" class="clip-selection" title="Keep this range as a new project OGG and realign all chart levels. Original imported audio stays unchanged." hidden>Clip selection</button>
+  </div>
+  <div id="chartViewport">
+    <div id="chartSpace"><canvas id="chart" tabindex="0" aria-label="Chart note editor"></canvas></div>
+  </div>
+  <div id="previewViewport" hidden>
+    <div class="preview-controls"><strong id="previewTitle">Preview</strong><span id="previewScore" role="status">Move your mouse up/down to follow the line. Hold left click or Z on notes.</span><button id="restartTest">Restart</button><label>Instrument <select id="testInstrument" aria-label="Play Test instrument" disabled><option value="soft">Soft tone</option><option value="flute">Flute</option><option value="brass">Brass</option><option value="organ">Organ</option><option value="chip">Chiptune</option><option value="none">None</option></select></label><label>Pitch tolerance <select id="tolerance"><option value="1">Normal</option><option value="2">Relaxed</option><option value="0.5">Precise</option></select></label></div>
+    <canvas id="previewCanvas" tabindex="0" aria-label="Mouse rhythm play test"></canvas>
+    <div class="preview-help">Notes approach the white hit line. Move the mouse vertically and hold left click or Z during each note. Hold left click or Z to sound the instrument while the song plays; moving up/down smoothly changes its pitch. Choose an Instrument, or None for song-only practice. Volume controls both sounds. Space plays/pauses. Preview follows automatically. This is a local timing/practice test; game scoring may differ.</div>
+  </div>
+  <audio id="audio" preload="metadata"></audio>
+</div>
+<script src="editor.js"></script>
+<script src="trim.js"></script>
+<script src="preview.js"></script>
+</body>
+</html>

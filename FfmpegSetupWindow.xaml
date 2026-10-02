@@ -1,0 +1,12 @@
+<Window x:Class="MySingingMonsterKaraokeStudio.FfmpegSetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Icon="Assets/StudioIcon.ico" Title="My Singing Monster Karaoke Studio — Audio Converter Setup" Width="460" Height="250"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#171A21" Foreground="#F4F6FB">
+    <StackPanel Margin="24">
+        <TextBlock Text="Set up FFmpeg" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,12"/>
+        <TextBlock x:Name="SetupMessage" Text="Preparing audio converter…" TextWrapping="Wrap" Height="52"/>
+        <ProgressBar x:Name="SetupProgress" Minimum="0" Maximum="100" Height="10" Margin="0,8,0,16"/>
+        <Button x:Name="FinishButton" Content="Installing…" IsEnabled="False" Height="34" Click="FinishButton_Click"/>
+    </StackPanel>
+</Window>
