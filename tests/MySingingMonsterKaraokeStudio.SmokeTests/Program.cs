@@ -498,7 +498,14 @@ internal static class Program
         await WaitUntil(async () => (await Snapshot()).GetProperty("projectKey").GetString() == (string)Field("_projectKey")!, "Generated chart editor ready");
         Check(File.Exists(Path.Combine(project.ProjectFolder, "song.ogg")) && File.Exists(Path.Combine(project.ProjectFolder, "song.mid")) && File.Exists(project.ChartPath) && project.Notes.Count > 0, "One-click export runs MP3 to OGG to MIDI to automatically placed chart notes");
         Check(project.Notes.Any(n => n.Pitch == 69 && n.Length > 4.5), "Automatic note drafting detects the test recording's A4 pitch and sustained duration");
-        await WaitUntil(async () => (await Js("document.getElementById('audio').readyState >= 1")).GetBoolean(), "Exported song audio ready");
+        // Force a delayed reload after the completion notice to cover slower hosted runners.
+        Invoke("SendAudioToEditor", true);
+        var exportedAudioKey = (string)Field("_audioKey")!;
+        await WaitUntil(async () =>
+        {
+            var audio = await Js("({src: document.getElementById('audio').getAttribute('src'), ready: document.getElementById('audio').readyState >= 1})");
+            return audio.GetProperty("src").GetString()?.EndsWith(exportedAudioKey, StringComparison.Ordinal) == true && audio.GetProperty("ready").GetBoolean();
+        }, "Exported song audio ready");
         Check(((System.Windows.Controls.TextBlock)Field("StatusText")!).Text.Contains(zipPath), "Completed export keeps its chosen ZIP location visible after audio reloads");
         var midi = new MidiService().Read(Path.Combine(project.ProjectFolder, "song.mid"));
         Check(midi.Count > 0 && midi.Any(n => n.Pitch == 69) && File.ReadAllBytes(Path.Combine(project.ProjectFolder, "song.mid")).Take(4).SequenceEqual("MThd"u8.ToArray()), "The pipeline produces a real standard MIDI file with note events");

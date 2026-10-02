@@ -263,7 +263,7 @@
     audio.pause(); duration = 0; peaks = null;
     if (url) {
       waveMessage = 'Reading audio waveform…';
-      status('Loading audio…');
+      status('Loading audio…', false, true);
       audio.src = url; audio.load();
       loadWave(url, version, loadingController.signal);
     } else {
