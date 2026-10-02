@@ -1176,8 +1176,10 @@ internal static class Program
 
     private static async Task BrowserMouse(string type, double x, double y, bool held, string button = "right")
     {
-        var data = JsonSerializer.Serialize(new { x, y });
-        var position = await Js("(() => {const p=" + data + ";const r=document.getElementById('chart').getBoundingClientRect(),v=document.getElementById('chartViewport');return {x:r.left+p.x-v.scrollLeft,y:r.top+p.y-v.scrollTop};})()");
+        var data = JsonSerializer.Serialize(new { type, x, y });
+        var position = await Js("(() => {const p=" + data + ";const c=document.getElementById('chart'),v=document.getElementById('chartViewport');if(p.type==='mousePressed'){if(p.x<v.scrollLeft||p.x>=v.scrollLeft+v.clientWidth)v.scrollLeft=Math.max(0,p.x-v.clientWidth/2);if(p.y<v.scrollTop||p.y>=v.scrollTop+v.clientHeight)v.scrollTop=Math.max(0,p.y-v.clientHeight/2);}const r=c.getBoundingClientRect(),x=r.left+p.x-v.scrollLeft,y=r.top+p.y-v.scrollTop;return {x,y,target:document.elementFromPoint(x,y)?.id??null,width:v.clientWidth,height:v.clientHeight};})()");
+        if (type == "mousePressed" && position.GetProperty("target").GetString() != "chart")
+            throw new InvalidOperationException("Trusted mouse press must start on the visible chart: " + position.GetRawText());
         await Editor.CoreWebView2.CallDevToolsProtocolMethodAsync("Input.dispatchMouseEvent", JsonSerializer.Serialize(new
         {
             type, x = position.GetProperty("x").GetDouble(), y = position.GetProperty("y").GetDouble(),
@@ -1426,6 +1428,11 @@ internal static class Program
         await Key("z", true);
         await Js("(() => {const n=document.getElementById('noteLength');n.value=-1;n.dispatchEvent(new Event('change'));document.getElementById('snap').value=8;})()");
         Check((await Js("Number(document.getElementById('noteLength').value)")).GetDouble() == .25, "Invalid note lengths normalize to a valid duration");
+        var originalEditorHeight = Editor.Height;
+        Editor.Height = 380;
+        Window.UpdateLayout();
+        await Js("window.dispatchEvent(new Event('resize'))");
+        await WaitUntil(async () => (await Js("document.getElementById('chartViewport').clientHeight > 0 && document.getElementById('chartViewport').clientHeight < 250")).GetBoolean(), "Small chart viewport ready");
         await Js("document.getElementById('chart').addEventListener('pointerdown',e=>{window.lengthTrusted=e.isTrusted;},{once:true})");
         await BrowserMouse("mousePressed", 850, 341, true, "left");
         await BrowserMouse("mouseMoved", 1090, 341, true, "left");
@@ -1436,6 +1443,9 @@ internal static class Program
         notes = (await Snapshot()).GetProperty("notes");
         Check(notes.GetArrayLength() == 5 && notes[4].GetProperty("length").GetDouble() == 1 && notes[4].GetProperty("pitch").GetInt32() == 58, "Releasing a real left-button drag finishes one sustained note");
         await Key("z", true);
+        Editor.Height = originalEditorHeight;
+        Window.UpdateLayout();
+        await Js("window.dispatchEvent(new Event('resize'))");
         await Js("document.getElementById('noteLength').value=.9");
         await Gesture(1600, 320, 1600, 320);
         await WaitUntil(() => Task.FromResult(Projects.LoadFile(fixture.ProjectJsonPath).Notes.Count == 5 && !(bool)Field("_dirty")!), "Note durations autosaved");
